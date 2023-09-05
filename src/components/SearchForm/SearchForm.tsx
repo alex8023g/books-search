@@ -86,7 +86,7 @@ export function SearchForm() {
           label='Категория'
           onChange={(e) => {
             setCategory(e.target.value);
-            dispatch(searchAction({ searchQuery, category, orderBy }));
+            dispatch(searchAction({ searchQuery, category: e.target.value, orderBy }));
           }}
         >
           {categoryArr.map(({ text, val, key }) => (
@@ -107,7 +107,10 @@ export function SearchForm() {
           id='sort-select'
           value={orderBy}
           label='Сортировка'
-          onChange={(e) => setOrderBy(e.target.value)}
+          onChange={(e) => {
+            setOrderBy(e.target.value);
+            dispatch(searchAction({ searchQuery, category, orderBy: e.target.value }));
+          }}
         >
           {sortArr.map(({ text, val, key }) => (
             <MenuItem value={val} key={key}>
