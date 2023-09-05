@@ -13,7 +13,7 @@ import {
 import SearchIcon from '@mui/icons-material/Search';
 import { getBooks } from '../../api/api';
 import { nanoid } from 'nanoid';
-import { loadingAction } from '../../store/rootReducer';
+import { loadingAction, searchAction } from '../../store/rootReducer';
 import { useDispatch } from 'react-redux';
 
 let categoryArr = [
@@ -34,13 +34,14 @@ let sortArr = [
 export function SearchForm() {
   const [searchQuery, setSearchQuery] = useState('');
   const [category, setCategory] = useState('all');
-  const [sortBy, setSortBy] = useState('relevance');
+  const [orderBy, setOrderBy] = useState('relevance');
   const dispatch = useDispatch();
 
   function makeRequest(e: SyntheticEvent) {
     e.preventDefault();
     dispatch(loadingAction(true));
-    getBooks(e, searchQuery, category, sortBy);
+    dispatch(searchAction({ searchQuery, category, orderBy }));
+    // getBooks(e, searchQuery, category, orderBy);
   }
 
   return (
@@ -83,7 +84,10 @@ export function SearchForm() {
           id='demo-simple-select'
           value={category}
           label='Категория'
-          onChange={(e) => setCategory(e.target.value)}
+          onChange={(e) => {
+            setCategory(e.target.value);
+            dispatch(searchAction({ searchQuery, category, orderBy }));
+          }}
         >
           {categoryArr.map(({ text, val, key }) => (
             <MenuItem value={val} key={key}>
@@ -101,9 +105,9 @@ export function SearchForm() {
         <Select
           labelId='sort-select-label'
           id='sort-select'
-          value={sortBy}
+          value={orderBy}
           label='Сортировка'
-          onChange={(e) => setSortBy(e.target.value)}
+          onChange={(e) => setOrderBy(e.target.value)}
         >
           {sortArr.map(({ text, val, key }) => (
             <MenuItem value={val} key={key}>

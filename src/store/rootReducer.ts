@@ -1,9 +1,36 @@
 import { Action, ActionCreator, Reducer } from 'redux';
 
+export type Category =
+  | 'all'
+  | 'art'
+  | 'biography'
+  | 'computers'
+  | 'history'
+  | 'medical'
+  | 'poetry';
+
+export type OrderBy = 'relevance' | 'newest';
+
+export interface SearchParams {
+  searchQuery: string;
+  category: Category;
+  orderBy: OrderBy;
+}
 export type RootState = {
+  searchParams: SearchParams;
   isLoading: boolean;
   // loadingError?: LoadError;
 };
+
+export const SEARCH = 'SEARCH';
+type Search = {
+  type: typeof SEARCH;
+  searchParams: SearchParams;
+};
+export const searchAction: ActionCreator<Search> = (searchParams) => ({
+  type: SEARCH,
+  searchParams,
+});
 
 export const LOADING = 'LOADING';
 type Loading = {
@@ -15,11 +42,16 @@ export const loadingAction: ActionCreator<Loading> = (isLoading) => ({
   isLoading: isLoading,
 });
 
-const initialState = {
+const initialState: RootState = {
+  searchParams: {
+    searchQuery: '',
+    category: 'all',
+    orderBy: 'relevance',
+  },
   isLoading: false,
 };
 
-type MyAction = Loading;
+type MyAction = Loading | Search;
 
 export const rootReducer: Reducer<RootState, MyAction> = (
   state = initialState,
@@ -30,6 +62,11 @@ export const rootReducer: Reducer<RootState, MyAction> = (
       return {
         ...state,
         isLoading: action.isLoading,
+      };
+    case SEARCH:
+      return {
+        ...state,
+        searchParams: action.searchParams,
       };
     // case LOADING_ERROR:
     //   return {
