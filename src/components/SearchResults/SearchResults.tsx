@@ -27,39 +27,37 @@ export interface BookData {
 
 export function SearchResults() {
   const [data, totalResults] = useBooksData();
-  console.log(data);
+  console.log(data, totalResults);
 
   return (
     <Box border='1px solid green'>
       <h2>Рузультаты поиска {totalResults}</h2>
-
-      {data &&
-        data.map(({ id, volumeInfo: { authors, categories, title, imageLinks } }) => (
-          <li className={styles.li} key={id}>
-            {/* {title}| {categories && categories[0]}| {authors} */}
-            <Card sx={{ pt: 3, maxWidth: 245 }} elevation={3}>
-              <CardMedia
-                sx={{ height: 200, width: 150, margin: '0 auto' }}
-                image={imageLinks && imageLinks.thumbnail}
-                title='green iguana'
-              />
-              <CardContent>
-                <Typography gutterBottom variant='h6' component='div'>
-                  {title}
-                </Typography>
-                <Typography variant='body2' color='text.secondary'>
-                  {authors && authors.join(', ')}
-                </Typography>
-              </CardContent>
-              <CardActions>
-                {/* <Button size='small'>Share</Button> */}
-                {/* <Button size='small'>{categories && categories[0]}</Button> */}
-                {categories && <Chip label={categories[0]} size='small' />}
-                {/* <Chip label={categories && categories[0]} size='small' variant='outlined' /> */}
-              </CardActions>
-            </Card>
-          </li>
-        ))}
+      <ul className={styles.booksList}>
+        {data &&
+          data.map(({ id, volumeInfo: { authors, categories, title, imageLinks } }) => (
+            <li className={styles.li} key={id}>
+              {/* {title}| {categories && categories[0]}| {authors} */}
+              <Card sx={{ pt: 3, maxWidth: 245, height: '100%' }} elevation={3}>
+                <CardMedia
+                  sx={{ height: 200, width: 150, margin: '0 auto' }}
+                  image={(imageLinks && imageLinks.thumbnail) || ''}
+                  title='green iguana'
+                />
+                <CardContent sx={{ marginBottom: 'auto' }}>
+                  <Typography gutterBottom variant='h6' component='div'>
+                    {title}
+                  </Typography>
+                  <Typography variant='body2' color='text.secondary'>
+                    {authors && authors.join(', ')}
+                  </Typography>
+                </CardContent>
+                <CardActions sx={{ marginTop: 'auto' }}>
+                  {categories && <Chip label={categories[0]} size='small' />}
+                </CardActions>
+              </Card>
+            </li>
+          ))}
+      </ul>
     </Box>
   );
 }

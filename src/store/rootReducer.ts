@@ -18,6 +18,7 @@ export interface SearchParams {
 }
 export type RootState = {
   searchParams: SearchParams;
+  startIndex: number;
   isLoading: boolean;
   // loadingError?: LoadError;
 };
@@ -30,6 +31,23 @@ type Search = {
 export const searchAction: ActionCreator<Search> = (searchParams) => ({
   type: SEARCH,
   searchParams,
+});
+
+export const INCSTARTINDEX = 'INCSTARTINDEX';
+type IncStartIndex = {
+  type: typeof INCSTARTINDEX;
+  // startIndex: number;
+};
+export const incStartIndexAction: ActionCreator<IncStartIndex> = () => ({
+  type: INCSTARTINDEX,
+});
+
+export const RESETSTARTINDEX = 'RESETSTARTINDEX';
+type ResetStartIndex = {
+  type: typeof RESETSTARTINDEX;
+};
+export const resetStartIndexAction: ActionCreator<ResetStartIndex> = () => ({
+  type: RESETSTARTINDEX,
 });
 
 export const LOADING = 'LOADING';
@@ -48,10 +66,11 @@ const initialState: RootState = {
     category: 'all',
     orderBy: 'relevance',
   },
+  startIndex: 0,
   isLoading: false,
 };
 
-type MyAction = Loading | Search;
+type MyAction = Loading | Search | IncStartIndex | ResetStartIndex;
 
 export const rootReducer: Reducer<RootState, MyAction> = (
   state = initialState,
@@ -67,6 +86,16 @@ export const rootReducer: Reducer<RootState, MyAction> = (
       return {
         ...state,
         searchParams: action.searchParams,
+      };
+    case INCSTARTINDEX:
+      return {
+        ...state,
+        startIndex: state.startIndex + 1,
+      };
+    case RESETSTARTINDEX:
+      return {
+        ...state,
+        startIndex: 0,
       };
     // case LOADING_ERROR:
     //   return {

@@ -13,7 +13,11 @@ import {
 import SearchIcon from '@mui/icons-material/Search';
 // import { getBooks } from '../../api/api';
 import { nanoid } from 'nanoid';
-import { loadingAction, searchAction } from '../../store/rootReducer';
+import {
+  loadingAction,
+  resetStartIndexAction,
+  searchAction,
+} from '../../store/rootReducer';
 import { useDispatch } from 'react-redux';
 
 let categoryArr = [
@@ -41,6 +45,7 @@ export function SearchForm() {
     e.preventDefault();
     dispatch(loadingAction(true));
     dispatch(searchAction({ searchQuery, category, orderBy }));
+    dispatch(resetStartIndexAction());
     // getBooks(e, searchQuery, category, orderBy);
   }
 
