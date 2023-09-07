@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState, SearchParams } from '../store/rootReducer';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState, SearchParams, loadingAction } from '../store/rootReducer';
 // import { getBooks } from '../api/api';
 import { BookData } from '../components/SearchResults';
 
@@ -8,6 +8,8 @@ export const step = 5;
 export function useBooksData() {
   const [data, setData] = useState<BookData[]>([]);
   const [totalResults, setTotalResults] = useState<number>();
+  const [loadMore, setLoadMore] = useState(false);
+  const dispatch = useDispatch();
   // const searchParams = useSelector<RootState, SearchParams>(
   const { searchQuery, category, orderBy }: SearchParams = useSelector<
     RootState,
@@ -17,6 +19,9 @@ export function useBooksData() {
   const startIndex = useSelector<RootState, number>((state) => state.startIndex);
   useEffect(() => {
     (async () => {
+      if (startIndex === 0) {
+        setData([]);
+      }
       // console.log(searchParams);
       // const res = await getBooks(searchParams);
       console.log(searchQuery, category, orderBy);
@@ -34,21 +39,28 @@ export function useBooksData() {
       console.log(URI);
 
       try {
+        dispatch(loadingAction(true));
         let res = await fetch(URI);
         let { items, totalItems }: { items: BookData[]; totalItems: number } =
           await res.json();
         console.log('useBooksData', items, totalItems);
-        setData(items);
+        // setData(items);
         setTotalResults(totalItems);
-        fetch(URI)
-          .then((res) => res.json())
-          .then((res) => console.log(res));
+        // fetch(URI)
+        //   .then((res) => res.json())
+        //   .then((res) => console.log(res));
+        if (items.length > step) {
+          items.pop();
+          setLoadMore(true);
+        } else {
+          setLoadMore(false);
+        }
+        setData((curr) => curr.concat(items));
       } catch {
         throw new Error('ошибка api запроса');
       }
-      // if (res) {
-      // }
+      dispatch(loadingAction(false));
     })();
   }, [searchQuery, category, orderBy, startIndex]);
-  return [data, totalResults] as const;
+  return [data, totalResults, loadMore] as const;
 }

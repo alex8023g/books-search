@@ -2,21 +2,20 @@ import React, { useState } from 'react';
 import styles from './loadmorebtn.module.css';
 import LoadingButton from '@mui/lab/LoadingButton';
 import AddIcon from '@mui/icons-material/Add';
-import { useDispatch } from 'react-redux';
-import { incStartIndexAction } from '../../store/rootReducer';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState, incStartIndexAction } from '../../store/rootReducer';
 
 export function LoadMoreBtn() {
-  const [loading, setLoading] = useState<boolean>(false);
   const dispatch = useDispatch();
+  const isLoading: boolean = useSelector<RootState, boolean>((state) => state.isLoading);
 
   return (
     <LoadingButton
       onClick={() => {
         dispatch(incStartIndexAction());
-        // setLoading(!loading);
       }}
       endIcon={<AddIcon />}
-      // loading={loading}
+      loading={isLoading}
       loadingPosition='end'
       variant='contained'
     >

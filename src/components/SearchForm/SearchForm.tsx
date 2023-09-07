@@ -11,7 +11,6 @@ import {
   Select,
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-// import { getBooks } from '../../api/api';
 import { nanoid } from 'nanoid';
 import {
   loadingAction,
@@ -91,6 +90,7 @@ export function SearchForm() {
           label='Категория'
           onChange={(e) => {
             setCategory(e.target.value);
+            dispatch(resetStartIndexAction());
             dispatch(searchAction({ searchQuery, category: e.target.value, orderBy }));
           }}
         >
@@ -99,8 +99,6 @@ export function SearchForm() {
               {text}
             </MenuItem>
           ))}
-          {/* <MenuItem value='byad'>Twenty</MenuItem> */}
-          {/* <MenuItem value='{30}'>Thirty</MenuItem> */}
         </Select>
       </FormControl>
       <br />
@@ -114,6 +112,7 @@ export function SearchForm() {
           label='Сортировка'
           onChange={(e) => {
             setOrderBy(e.target.value);
+            dispatch(resetStartIndexAction());
             dispatch(searchAction({ searchQuery, category, orderBy: e.target.value }));
           }}
         >

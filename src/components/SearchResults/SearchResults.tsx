@@ -8,6 +8,7 @@ import {
   CardContent,
   CardMedia,
   Chip,
+  CircularProgress,
   Typography,
 } from '@mui/material';
 import { RootState, SearchParams } from '../../store/rootReducer';
@@ -25,11 +26,18 @@ export interface BookData {
     imageLinks?: { thumbnail: string };
   };
 }
-
+let dataSum: BookData[] = [];
 export function SearchResults() {
-  const [data, totalResults] = useBooksData();
+  const [data, totalResults, loadMore] = useBooksData();
+  const isLoading = useSelector<RootState, boolean>((state) => state.isLoading);
+  const startIndex = useSelector<RootState, number>((state) => state.startIndex);
   console.log(data, totalResults);
+  // const dataMod: BookData[] = structuredClone(data);
+  // if (data.length > step) {
+  //   dataMod.pop();
+  // }
 
+  // dataSum = dataSum.concat(dataMod);
   return (
     <Box>
       <h2>Рузультаты поиска {totalResults}</h2>
@@ -59,7 +67,8 @@ export function SearchResults() {
             </li>
           ))}
       </ul>
-      {data?.length > step && <LoadMoreBtn />}
+      {isLoading && !loadMore && <CircularProgress />}
+      {loadMore && <LoadMoreBtn />}
     </Box>
   );
 }
