@@ -42,6 +42,7 @@ export function SearchForm() {
 
   function makeRequest(e: SyntheticEvent) {
     e.preventDefault();
+    if (!searchQuery) return;
     dispatch(loadingAction(true));
     dispatch(searchAction({ searchQuery, category, orderBy }));
     dispatch(resetStartIndexAction());
@@ -49,80 +50,95 @@ export function SearchForm() {
   }
 
   return (
-    <Box
-      component='form'
-      onSubmit={(e) => {
-        makeRequest(e);
-      }}
-      border='1px solid blue'
-    >
-      <h2>Форма поиска</h2>
-      <FormControl sx={{ m: 1, width: '25ch' }} variant='outlined'>
-        <InputLabel htmlFor='outlined-adornment-password'>Введите запрос</InputLabel>
-        <OutlinedInput
-          id='outlined-adornment-password'
-          type='text'
-          onChange={(e) => setSearchQuery(e.target.value)}
-          endAdornment={
-            <InputAdornment position='end'>
-              <IconButton
-                aria-label='toggle password visibility'
-                // onClick={handleClickShowPassword}
-                // onMouseDown={handleMouseDownPassword}
-                edge='end'
-                type='submit'
-              >
-                {/* {showPassword ? <VisibilityOff /> : <Visibility />} */}
-                <SearchIcon fontSize='large' />
-              </IconButton>
-            </InputAdornment>
-          }
-          label='Введите запрос'
-        />
-      </FormControl>
-      <br />
-      <FormControl sx={{ minWidth: 250 }}>
-        <InputLabel id='demo-simple-select-label'>Категория</InputLabel>
-        <Select
-          labelId='demo-simple-select-label'
-          id='demo-simple-select'
-          value={category}
-          label='Категория'
-          onChange={(e) => {
-            setCategory(e.target.value);
-            dispatch(resetStartIndexAction());
-            dispatch(searchAction({ searchQuery, category: e.target.value, orderBy }));
+    <section>
+      <h1>Search for books</h1>
+      <Box
+        component='form'
+        sx={{ margin: '0 auto', display: 'flex', flexDirection: 'column', maxWidth: 700 }}
+        onSubmit={(e) => {
+          makeRequest(e);
+        }}
+        // border='1px solid blue'
+      >
+        <FormControl
+          variant='outlined'
+          size='small'
+          sx={{
+            mb: 2,
+            // width: '50vw',
+            // flexGrow: 1,
           }}
         >
-          {categoryArr.map(({ text, val, key }) => (
-            <MenuItem value={val} key={key}>
-              {text}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-      <br />
-      <br />
-      <FormControl sx={{ minWidth: 250 }}>
-        <InputLabel id='sort-select-label'>Сортировка</InputLabel>
-        <Select
-          labelId='sort-select-label'
-          id='sort-select'
-          value={orderBy}
-          label='Сортировка'
-          onChange={(e) => {
-            setOrderBy(e.target.value);
-            dispatch(resetStartIndexAction());
-            dispatch(searchAction({ searchQuery, category, orderBy: e.target.value }));
-          }}
-        >
-          {sortArr.map(({ text, val, key }) => (
-            <MenuItem value={val} key={key}>
-              {text}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-    </Box>
+          <InputLabel htmlFor='outlined-adornment-password'>Введите запрос</InputLabel>
+          <OutlinedInput
+            id='outlined-adornment-password'
+            type='text'
+            onChange={(e) => setSearchQuery(e.target.value)}
+            endAdornment={
+              <InputAdornment position='end'>
+                <IconButton
+                  aria-label='toggle password visibility'
+                  // onClick={handleClickShowPassword}
+                  // onMouseDown={handleMouseDownPassword}
+                  edge='end'
+                  type='submit'
+                >
+                  {/* {showPassword ? <VisibilityOff /> : <Visibility />} */}
+                  <SearchIcon fontSize='medium' />
+                </IconButton>
+              </InputAdornment>
+            }
+            label='Введите запрос'
+          />
+        </FormControl>
+        <div>
+          <FormControl size='small' sx={{ mr: 2, minWidth: 200 }}>
+            <InputLabel id='demo-simple-select-label'>Категория</InputLabel>
+            <Select
+              labelId='demo-simple-select-label'
+              id='demo-simple-select'
+              value={category}
+              label='Категория'
+              onChange={(e) => {
+                setCategory(e.target.value);
+                dispatch(resetStartIndexAction());
+                dispatch(
+                  searchAction({ searchQuery, category: e.target.value, orderBy })
+                );
+              }}
+            >
+              {categoryArr.map(({ text, val, key }) => (
+                <MenuItem value={val} key={key}>
+                  {text}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
+          <FormControl size='small' sx={{ minWidth: 200 }}>
+            <InputLabel id='sort-select-label'>Сортировка</InputLabel>
+            <Select
+              labelId='sort-select-label'
+              id='sort-select'
+              value={orderBy}
+              label='Сортировка'
+              onChange={(e) => {
+                setOrderBy(e.target.value);
+                dispatch(resetStartIndexAction());
+                dispatch(
+                  searchAction({ searchQuery, category, orderBy: e.target.value })
+                );
+              }}
+            >
+              {sortArr.map(({ text, val, key }) => (
+                <MenuItem value={val} key={key}>
+                  {text}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </div>
+      </Box>
+    </section>
   );
 }

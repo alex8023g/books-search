@@ -57,7 +57,7 @@ export function useBooksData() {
         }
         setData((curr) => curr.concat(items));
       } catch {
-        throw new Error('ошибка api запроса');
+        console.log('ошибка api запроса');
       }
       dispatch(loadingAction(false));
     })();

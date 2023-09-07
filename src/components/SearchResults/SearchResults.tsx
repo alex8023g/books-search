@@ -40,19 +40,22 @@ export function SearchResults() {
   // dataSum = dataSum.concat(dataMod);
   return (
     <Box>
-      <h2>Рузультаты поиска {totalResults}</h2>
+      {data[0] && <h2>Рузультаты поиска {totalResults}</h2>}
       <ul className={styles.booksUl}>
         {data &&
           data.map(({ id, volumeInfo: { authors, categories, title, imageLinks } }) => (
             <li className={styles.bookLi} key={id}>
               {/* {title}| {categories && categories[0]}| {authors} */}
-              <Card sx={{ width: 245, height: '100%' }} elevation={3}>
+              <Card
+                sx={{ position: 'relative', width: 245, height: '100%' }}
+                elevation={3}
+              >
                 <CardMedia
                   sx={{ height: 200, width: 150, margin: '0 auto' }}
                   image={(imageLinks && imageLinks.thumbnail) || ''}
                   title={title}
                 />
-                <CardContent sx={{ marginBottom: 'auto' }}>
+                <CardContent sx={{ marginBottom: 3 }}>
                   <Typography gutterBottom variant='h6' component='div'>
                     {title}
                   </Typography>
@@ -60,7 +63,7 @@ export function SearchResults() {
                     {authors && authors.join(', ')}
                   </Typography>
                 </CardContent>
-                <CardActions sx={{ marginTop: 'auto' }}>
+                <CardActions sx={{ position: 'absolute', bottom: 0 }}>
                   {categories && <Chip label={categories[0]} size='small' />}
                 </CardActions>
               </Card>
