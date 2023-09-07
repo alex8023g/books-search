@@ -4,6 +4,7 @@ import { RootState, SearchParams } from '../store/rootReducer';
 // import { getBooks } from '../api/api';
 import { BookData } from '../components/SearchResults';
 
+export const step = 5;
 export function useBooksData() {
   const [data, setData] = useState<BookData[]>([]);
   const [totalResults, setTotalResults] = useState<number>();
@@ -21,8 +22,11 @@ export function useBooksData() {
       console.log(searchQuery, category, orderBy);
       if (!searchQuery) return;
       const subject = category === 'all' ? '' : '+subject:' + category;
-      const step = 5;
-      const URI = `https://www.googleapis.com/books/v1/volumes?q=${searchQuery}${subject}&orderBy=${orderBy}&startIndex=${1}&maxResults=${step}&langRestrict=ru&key=AIzaSyBSv54tEpbFZQ6SuliVMeE7H7HNgNZnkJ8`;
+      const URI = `https://www.googleapis.com/books/v1/volumes?q=${searchQuery}${subject}&orderBy=${orderBy}&startIndex=${
+        startIndex * step
+      }&maxResults=${
+        step + 1
+      }&langRestrict=ru&key=AIzaSyBSv54tEpbFZQ6SuliVMeE7H7HNgNZnkJ8`;
       // const URI = `https://www.googleapis.com/books/v1/volumes?q=${searchQuery}${subject}&orderBy=${orderBy}&startIndex=${
       //   startIndex * step
       // }&maxResults=${step}&key=AIzaSyBSv54tEpbFZQ6SuliVMeE7H7HNgNZnkJ8`;

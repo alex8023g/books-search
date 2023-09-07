@@ -21,7 +21,6 @@ function App() {
         {/* <h1>поиск книг</h1> */}
         <SearchForm />
         <SearchResults />
-        <LoadMoreBtn />
       </div>
     </Provider>
   );

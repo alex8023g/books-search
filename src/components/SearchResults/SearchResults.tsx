@@ -13,7 +13,8 @@ import {
 import { RootState, SearchParams } from '../../store/rootReducer';
 import { useSelector } from 'react-redux';
 // import { getBooks } from '../../api/api';
-import { useBooksData } from '../../hooks/useBooksData';
+import { step, useBooksData } from '../../hooks/useBooksData';
+import { LoadMoreBtn } from '../LoadMoreBtn';
 
 export interface BookData {
   id: string;
@@ -30,18 +31,18 @@ export function SearchResults() {
   console.log(data, totalResults);
 
   return (
-    <Box border='1px solid green'>
+    <Box>
       <h2>Рузультаты поиска {totalResults}</h2>
-      <ul className={styles.booksList}>
+      <ul className={styles.booksUl}>
         {data &&
           data.map(({ id, volumeInfo: { authors, categories, title, imageLinks } }) => (
-            <li className={styles.li} key={id}>
+            <li className={styles.bookLi} key={id}>
               {/* {title}| {categories && categories[0]}| {authors} */}
-              <Card sx={{ pt: 3, maxWidth: 245, height: '100%' }} elevation={3}>
+              <Card sx={{ width: 245, height: '100%' }} elevation={3}>
                 <CardMedia
                   sx={{ height: 200, width: 150, margin: '0 auto' }}
                   image={(imageLinks && imageLinks.thumbnail) || ''}
-                  title='green iguana'
+                  title={title}
                 />
                 <CardContent sx={{ marginBottom: 'auto' }}>
                   <Typography gutterBottom variant='h6' component='div'>
@@ -58,6 +59,7 @@ export function SearchResults() {
             </li>
           ))}
       </ul>
+      {data?.length > step && <LoadMoreBtn />}
     </Box>
   );
 }
