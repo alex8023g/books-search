@@ -43,7 +43,7 @@ export function SearchResults() {
   // dataSum = dataSum.concat(dataMod);
   return (
     <Box>
-      {data[0] && <h2>Рузультаты поиска {totalResults}</h2>}
+      {(data[0] || totalResults === 0) && <h2>Рузультаты поиска {totalResults}</h2>}
       <ul className={styles.booksUl}>
         {data &&
           data.map(({ id, volumeInfo: { authors, categories, title, imageLinks } }) => (
