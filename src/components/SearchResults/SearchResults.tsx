@@ -73,7 +73,7 @@ export function SearchResults() {
             </li>
           ))}
       </ul>
-      {isLoading && !isLoadMore && <CircularProgress />}
+      {isLoading && !isLoadMore && <CircularProgress id='circle-progress' />}
       {isLoadMore && <LoadMoreBtn />}
     </Box>
   );

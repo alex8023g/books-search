@@ -70,14 +70,15 @@ export function SearchForm() {
             // flexGrow: 1,
           }}
         >
-          <InputLabel htmlFor='outlined-adornment-password'>Введите запрос</InputLabel>
+          <InputLabel htmlFor='req-input'>Введите запрос</InputLabel>
           <OutlinedInput
-            id='outlined-adornment-password'
+            id='req-input'
             type='text'
             onChange={(e) => setSearchQuery(e.target.value)}
             endAdornment={
               <InputAdornment position='end'>
                 <IconButton
+                  id='btn-search'
                   aria-label='toggle password visibility'
                   // onClick={handleClickShowPassword}
                   // onMouseDown={handleMouseDownPassword}
@@ -94,10 +95,10 @@ export function SearchForm() {
         </FormControl>
         <div>
           <FormControl size='small' sx={{ mr: 2, minWidth: 200 }}>
-            <InputLabel id='demo-simple-select-label'>Категория</InputLabel>
+            <InputLabel id='category-select-menu-label'>Категория</InputLabel>
             <Select
-              labelId='demo-simple-select-label'
-              id='demo-simple-select'
+              labelId='category-select-menu-label'
+              id='category-select-menu'
               value={category}
               label='Категория'
               onChange={(e) => {

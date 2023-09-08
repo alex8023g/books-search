@@ -11,6 +11,7 @@ export function LoadMoreBtn() {
 
   return (
     <LoadingButton
+      id='load-more-btn'
       onClick={() => {
         dispatch(incStartIndexAction());
       }}
