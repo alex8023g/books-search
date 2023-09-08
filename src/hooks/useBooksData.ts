@@ -1,6 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState, SearchParams, loadingAction } from '../store/rootReducer';
+import {
+  RootState,
+  SearchParams,
+  isLoadMoreAction,
+  loadingAction,
+} from '../store/rootReducer';
 // import { getBooks } from '../api/api';
 import { BookData } from '../components/SearchResults';
 
@@ -11,12 +16,14 @@ export function useBooksData() {
   const [loadMore, setLoadMore] = useState(false);
   const dispatch = useDispatch();
   // const searchParams = useSelector<RootState, SearchParams>(
-  const { searchQuery, category, orderBy }: SearchParams = useSelector<
+  const { searchQuery, category, orderBy, startIndex }: SearchParams = useSelector<
     RootState,
     SearchParams
   >((state) => state.searchParams);
 
-  const startIndex = useSelector<RootState, number>((state) => state.startIndex);
+  // const startIndex = useSelector<RootState, number>(
+  //   (state) => state.searchParams.startIndex
+  // );
   useEffect(() => {
     (async () => {
       if (startIndex === 0) {
@@ -51,9 +58,11 @@ export function useBooksData() {
         //   .then((res) => console.log(res));
         if (items.length > step) {
           items.pop();
-          setLoadMore(true);
+          // setLoadMore(true);
+          dispatch(isLoadMoreAction(true));
         } else {
-          setLoadMore(false);
+          // setLoadMore(false);
+          dispatch(isLoadMoreAction(false));
         }
         setData((curr) => curr.concat(items));
       } catch {

@@ -13,8 +13,9 @@ import {
 import SearchIcon from '@mui/icons-material/Search';
 import { nanoid } from 'nanoid';
 import {
+  isLoadMoreAction,
   loadingAction,
-  resetStartIndexAction,
+  // resetStartIndexAction,
   searchAction,
 } from '../../store/rootReducer';
 import { useDispatch } from 'react-redux';
@@ -44,9 +45,8 @@ export function SearchForm() {
     e.preventDefault();
     if (!searchQuery) return;
     dispatch(loadingAction(true));
-    dispatch(searchAction({ searchQuery, category, orderBy }));
-    dispatch(resetStartIndexAction());
-    // getBooks(e, searchQuery, category, orderBy);
+    dispatch(searchAction({ searchQuery, category, orderBy, startIndex: 0 }));
+    // dispatch(resetStartIndexAction());
   }
 
   return (
@@ -101,9 +101,14 @@ export function SearchForm() {
               label='Категория'
               onChange={(e) => {
                 setCategory(e.target.value);
-                dispatch(resetStartIndexAction());
+                dispatch(isLoadMoreAction(false));
                 dispatch(
-                  searchAction({ searchQuery, category: e.target.value, orderBy })
+                  searchAction({
+                    searchQuery,
+                    category: e.target.value,
+                    orderBy,
+                    startIndex: 0,
+                  })
                 );
               }}
             >
@@ -124,9 +129,14 @@ export function SearchForm() {
               label='Сортировка'
               onChange={(e) => {
                 setOrderBy(e.target.value);
-                dispatch(resetStartIndexAction());
+                dispatch(isLoadMoreAction(false));
                 dispatch(
-                  searchAction({ searchQuery, category, orderBy: e.target.value })
+                  searchAction({
+                    searchQuery,
+                    category,
+                    orderBy: e.target.value,
+                    startIndex: 0,
+                  })
                 );
               }}
             >

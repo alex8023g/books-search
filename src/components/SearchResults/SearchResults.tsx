@@ -30,7 +30,10 @@ let dataSum: BookData[] = [];
 export function SearchResults() {
   const [data, totalResults, loadMore] = useBooksData();
   const isLoading = useSelector<RootState, boolean>((state) => state.isLoading);
-  const startIndex = useSelector<RootState, number>((state) => state.startIndex);
+  const isLoadMore = useSelector<RootState, boolean>((state) => state.isLoadMore);
+  const startIndex = useSelector<RootState, number>(
+    (state) => state.searchParams.startIndex
+  );
   console.log(data, totalResults);
   // const dataMod: BookData[] = structuredClone(data);
   // if (data.length > step) {
@@ -70,8 +73,8 @@ export function SearchResults() {
             </li>
           ))}
       </ul>
-      {isLoading && !loadMore && <CircularProgress />}
-      {loadMore && <LoadMoreBtn />}
+      {isLoading && !isLoadMore && <CircularProgress />}
+      {isLoadMore && <LoadMoreBtn />}
     </Box>
   );
 }

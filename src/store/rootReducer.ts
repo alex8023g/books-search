@@ -15,11 +15,12 @@ export interface SearchParams {
   searchQuery: string;
   category: Category;
   orderBy: OrderBy;
+  startIndex: number;
 }
 export type RootState = {
   searchParams: SearchParams;
-  startIndex: number;
   isLoading: boolean;
+  isLoadMore: boolean;
   // loadingError?: LoadError;
 };
 
@@ -42,13 +43,13 @@ export const incStartIndexAction: ActionCreator<IncStartIndex> = () => ({
   type: INCSTARTINDEX,
 });
 
-export const RESETSTARTINDEX = 'RESETSTARTINDEX';
-type ResetStartIndex = {
-  type: typeof RESETSTARTINDEX;
-};
-export const resetStartIndexAction: ActionCreator<ResetStartIndex> = () => ({
-  type: RESETSTARTINDEX,
-});
+// export const RESETSTARTINDEX = 'RESETSTARTINDEX';
+// type ResetStartIndex = {
+//   type: typeof RESETSTARTINDEX;
+// };
+// export const resetStartIndexAction: ActionCreator<ResetStartIndex> = () => ({
+//   type: RESETSTARTINDEX,
+// });
 
 export const LOADING = 'LOADING';
 type Loading = {
@@ -60,17 +61,33 @@ export const loadingAction: ActionCreator<Loading> = (isLoading) => ({
   isLoading: isLoading,
 });
 
+export const ISLOADMORE = 'ISLOADMORE';
+type IsLoadMore = {
+  type: typeof ISLOADMORE;
+  isLoadMore: boolean;
+};
+export const isLoadMoreAction: ActionCreator<IsLoadMore> = (isLoadMore) => ({
+  type: ISLOADMORE,
+  isLoadMore,
+});
+
 const initialState: RootState = {
   searchParams: {
     searchQuery: '',
     category: 'all',
     orderBy: 'relevance',
+    startIndex: 0,
   },
-  startIndex: 0,
   isLoading: false,
+  isLoadMore: false,
 };
 
-type MyAction = Loading | Search | IncStartIndex | ResetStartIndex;
+type MyAction =
+  | Loading
+  | Search
+  | IncStartIndex
+  // | ResetStartIndex
+  | IsLoadMore;
 
 export const rootReducer: Reducer<RootState, MyAction> = (
   state = initialState,
@@ -90,12 +107,20 @@ export const rootReducer: Reducer<RootState, MyAction> = (
     case INCSTARTINDEX:
       return {
         ...state,
-        startIndex: state.startIndex + 1,
+        searchParams: {
+          ...state.searchParams,
+          startIndex: state.searchParams.startIndex + 1,
+        },
       };
-    case RESETSTARTINDEX:
+    // case RESETSTARTINDEX:
+    //   return {
+    //     ...state,
+    //     startIndex: 0,
+    //   };
+    case ISLOADMORE:
       return {
         ...state,
-        startIndex: 0,
+        isLoadMore: action.isLoadMore,
       };
     // case LOADING_ERROR:
     //   return {
