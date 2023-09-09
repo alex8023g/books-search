@@ -2,7 +2,7 @@ const sleep = (ms) => {
   return new Promise((resolve) => setTimeout(resolve, ms));
 };
 
-const step = 5;
+const step = 30;
 
 describe('Проверка поиска', () => {
   beforeEach(() => {

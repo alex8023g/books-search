@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styles from './searchresults.module.css';
 import {
   Alert,
   Box,
-  Button,
   Card,
   CardActions,
   CardContent,
@@ -13,10 +12,9 @@ import {
   Snackbar,
   Typography,
 } from '@mui/material';
-import { RootState, SearchParams, isLoadingErrorAction } from '../../store/rootReducer';
+import { RootState, isLoadingErrorAction } from '../../store/rootReducer';
 import { useDispatch, useSelector } from 'react-redux';
-// import { getBooks } from '../../api/api';
-import { step, useBooksData } from '../../hooks/useBooksData';
+import { useBooksData } from '../../hooks/useBooksData';
 import { LoadMoreBtn } from '../LoadMoreBtn';
 
 export interface BookData {
@@ -28,14 +26,10 @@ export interface BookData {
     imageLinks?: { thumbnail: string };
   };
 }
-// let dataSum: BookData[] = [];
 export function SearchResults() {
   const isLoading = useSelector<RootState, boolean>((state) => state.isLoading);
   const isLoadingError = useSelector<RootState, boolean>((state) => state.isLoadingError);
   const isLoadMore = useSelector<RootState, boolean>((state) => state.isLoadMore);
-  // const startIndex = useSelector<RootState, number>(
-  //   (state) => state.searchParams.startIndex
-  // );
   const [data, totalResults] = useBooksData();
   const dispatch = useDispatch();
 
@@ -43,12 +37,7 @@ export function SearchResults() {
   function handleCloseAlert() {
     dispatch(isLoadingErrorAction(false));
   }
-  // const dataMod: BookData[] = structuredClone(data);
-  // if (data.length > step) {
-  //   dataMod.pop();
-  // }
 
-  // dataSum = dataSum.concat(dataMod);
   return (
     <Box>
       {(data[0] || totalResults === 0) && <h2>Рузультаты поиска {totalResults}</h2>}
@@ -56,7 +45,6 @@ export function SearchResults() {
         {data[0] &&
           data.map(({ id, volumeInfo: { authors, categories, title, imageLinks } }) => (
             <li className={styles.bookLi} key={id}>
-              {/* {title}| {categories && categories[0]}| {authors} */}
               <Card
                 sx={{ position: 'relative', width: 245, height: '100%' }}
                 elevation={3}
@@ -88,7 +76,6 @@ export function SearchResults() {
         autoHideDuration={3000}
         onClose={handleCloseAlert}
         message='ошибка сервера'
-        // action={action}
       >
         <Alert severity='error' sx={{ width: '100%' }} variant='filled'>
           Ошибка сервера

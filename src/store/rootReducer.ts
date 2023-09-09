@@ -1,4 +1,4 @@
-import { Action, ActionCreator, Reducer } from 'redux';
+import { ActionCreator, Reducer } from 'redux';
 
 export type Category =
   | 'all'
@@ -38,19 +38,10 @@ export const searchAction: ActionCreator<Search> = (searchParams) => ({
 export const INCSTARTINDEX = 'INCSTARTINDEX';
 type IncStartIndex = {
   type: typeof INCSTARTINDEX;
-  // startIndex: number;
 };
 export const incStartIndexAction: ActionCreator<IncStartIndex> = () => ({
   type: INCSTARTINDEX,
 });
-
-// export const RESETSTARTINDEX = 'RESETSTARTINDEX';
-// type ResetStartIndex = {
-//   type: typeof RESETSTARTINDEX;
-// };
-// export const resetStartIndexAction: ActionCreator<ResetStartIndex> = () => ({
-//   type: RESETSTARTINDEX,
-// });
 
 export const LOADING = 'LOADING';
 type Loading = {
@@ -121,11 +112,7 @@ export const rootReducer: Reducer<RootState, MyAction> = (
           startIndex: state.searchParams.startIndex + 1,
         },
       };
-    // case RESETSTARTINDEX:
-    //   return {
-    //     ...state,
-    //     startIndex: 0,
-    //   };
+
     case ISLOADMORE:
       return {
         ...state,
@@ -134,7 +121,6 @@ export const rootReducer: Reducer<RootState, MyAction> = (
     case ISLOADING_ERROR:
       return {
         ...state,
-        // isLoading: false,
         isLoadingError: action.isLoadingError,
       };
     default:

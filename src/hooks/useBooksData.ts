@@ -7,15 +7,12 @@ import {
   loadingAction,
   isLoadingErrorAction,
 } from '../store/rootReducer';
-// import { getBooks } from '../api/api';
 import { BookData } from '../components/SearchResults';
 
-export const step = 5;
+export const step = 30;
 export function useBooksData() {
   const [data, setData] = useState<BookData[]>([]);
   const [totalResults, setTotalResults] = useState<number>();
-  // const [loadMore, setLoadMore] = useState(false);
-  // const searchParams = useSelector<RootState, SearchParams>(
   const { searchQuery, category, orderBy, startIndex }: SearchParams = useSelector<
     RootState,
     SearchParams
@@ -23,16 +20,11 @@ export function useBooksData() {
   const fetchTrigger = useSelector<RootState>((state) => state.fetchTrigger);
   const dispatch = useDispatch();
 
-  // const startIndex = useSelector<RootState, number>(
-  //   (state) => state.searchParams.startIndex
-  // );
   useEffect(() => {
     (async () => {
       if (startIndex === 0) {
         setData([]);
       }
-      // console.log(searchParams);
-      // const res = await getBooks(searchParams);
       console.log(searchQuery, category, orderBy);
       if (!searchQuery) return;
       const subject = category === 'all' ? '' : '+subject:' + category;
@@ -45,7 +37,6 @@ export function useBooksData() {
       console.log(URI);
 
       try {
-        // dispatch(isLoadingErrorAction(false));
         dispatch(loadingAction(true));
         dispatch(isLoadMoreAction(false));
 

@@ -1,4 +1,4 @@
-import React, { SyntheticEvent, useId, useState } from 'react';
+import React, { SyntheticEvent, useState } from 'react';
 import styles from './searchform.module.css';
 import {
   Box,
@@ -12,12 +12,7 @@ import {
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { nanoid } from 'nanoid';
-import {
-  isLoadMoreAction,
-  loadingAction,
-  // resetStartIndexAction,
-  searchAction,
-} from '../../store/rootReducer';
+import { isLoadMoreAction, searchAction } from '../../store/rootReducer';
 import { useDispatch } from 'react-redux';
 
 let categoryArr = [
@@ -44,10 +39,7 @@ export function SearchForm() {
   function makeRequest(e: SyntheticEvent) {
     e.preventDefault();
     if (!searchQuery) return;
-    // dispatch(isLoadMoreAction(false));
-    // dispatch(loadingAction(true));
     dispatch(searchAction({ searchQuery, category, orderBy, startIndex: 0 }));
-    // dispatch(resetStartIndexAction());
   }
 
   return (
@@ -59,15 +51,12 @@ export function SearchForm() {
         onSubmit={(e) => {
           makeRequest(e);
         }}
-        // border='1px solid blue'
       >
         <FormControl
           variant='outlined'
           size='small'
           sx={{
             mb: 2,
-            // width: '50vw',
-            // flexGrow: 1,
           }}
         >
           <InputLabel htmlFor='req-input'>Введите запрос</InputLabel>
@@ -80,12 +69,9 @@ export function SearchForm() {
                 <IconButton
                   id='btn-search'
                   aria-label='toggle password visibility'
-                  // onClick={handleClickShowPassword}
-                  // onMouseDown={handleMouseDownPassword}
                   edge='end'
                   type='submit'
                 >
-                  {/* {showPassword ? <VisibilityOff /> : <Visibility />} */}
                   <SearchIcon fontSize='medium' />
                 </IconButton>
               </InputAdornment>
