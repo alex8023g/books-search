@@ -66,7 +66,7 @@ type IsLoadingError = {
   type: typeof ISLOADING_ERROR;
   isLoadingError: boolean;
 };
-export const loadingErrorAction: ActionCreator<IsLoadingError> = (isLoadingError) => ({
+export const isLoadingErrorAction: ActionCreator<IsLoadingError> = (isLoadingError) => ({
   type: ISLOADING_ERROR,
   isLoadingError,
 });
@@ -131,8 +131,8 @@ export const rootReducer: Reducer<RootState, MyAction> = (
     case ISLOADING_ERROR:
       return {
         ...state,
-        isLoading: false,
-        loadingError: action.isLoadingError,
+        // isLoading: false,
+        isLoadingError: action.isLoadingError,
       };
     default:
       return state;

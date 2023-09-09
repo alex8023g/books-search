@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styles from './searchresults.module.css';
 import {
+  Alert,
   Box,
   Button,
   Card,
@@ -9,10 +10,11 @@ import {
   CardMedia,
   Chip,
   CircularProgress,
+  Snackbar,
   Typography,
 } from '@mui/material';
-import { RootState, SearchParams } from '../../store/rootReducer';
-import { useSelector } from 'react-redux';
+import { RootState, SearchParams, isLoadingErrorAction } from '../../store/rootReducer';
+import { useDispatch, useSelector } from 'react-redux';
 // import { getBooks } from '../../api/api';
 import { step, useBooksData } from '../../hooks/useBooksData';
 import { LoadMoreBtn } from '../LoadMoreBtn';
@@ -30,11 +32,17 @@ let dataSum: BookData[] = [];
 export function SearchResults() {
   const [data, totalResults, loadMore] = useBooksData();
   const isLoading = useSelector<RootState, boolean>((state) => state.isLoading);
+  const isLoadingError = useSelector<RootState, boolean>((state) => state.isLoadingError);
   const isLoadMore = useSelector<RootState, boolean>((state) => state.isLoadMore);
   const startIndex = useSelector<RootState, number>(
     (state) => state.searchParams.startIndex
   );
-  console.log(data, totalResults);
+  const dispatch = useDispatch();
+
+  console.log(data, totalResults, isLoadingError);
+  function handleCloseAlert() {
+    dispatch(isLoadingErrorAction(false));
+  }
   // const dataMod: BookData[] = structuredClone(data);
   // if (data.length > step) {
   //   dataMod.pop();
@@ -75,6 +83,17 @@ export function SearchResults() {
       </ul>
       {isLoading && !isLoadMore && <CircularProgress id='circle-progress' />}
       {isLoadMore && <LoadMoreBtn />}
+      <Snackbar
+        open={isLoadingError}
+        autoHideDuration={3000}
+        onClose={handleCloseAlert}
+        message='ошибка сервера'
+        // action={action}
+      >
+        <Alert severity='error' sx={{ width: '100%' }} variant='filled'>
+          Ошибка сервера
+        </Alert>
+      </Snackbar>
     </Box>
   );
 }
