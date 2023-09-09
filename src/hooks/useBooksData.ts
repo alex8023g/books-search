@@ -14,7 +14,7 @@ export const step = 5;
 export function useBooksData() {
   const [data, setData] = useState<BookData[]>([]);
   const [totalResults, setTotalResults] = useState<number>();
-  const [loadMore, setLoadMore] = useState(false);
+  // const [loadMore, setLoadMore] = useState(false);
   // const searchParams = useSelector<RootState, SearchParams>(
   const { searchQuery, category, orderBy, startIndex }: SearchParams = useSelector<
     RootState,
@@ -55,7 +55,7 @@ export function useBooksData() {
         console.log('useBooksData', items, totalItems);
         setTotalResults(totalItems);
 
-        if (items.length > step) {
+        if (items && items.length > step) {
           items.pop();
           dispatch(isLoadMoreAction(true));
         } else {
@@ -63,13 +63,13 @@ export function useBooksData() {
         }
         setData((curr) => curr.concat(items));
         console.log('api запроса без ошибки');
-      } catch {
-        console.log('ошибка api запроса');
+      } catch (err) {
+        console.log('ошибка api запроса', err);
         dispatch(isLoadingErrorAction(true));
       } finally {
         dispatch(loadingAction(false));
       }
     })();
   }, [searchQuery, category, orderBy, startIndex, fetchTrigger]);
-  return [data, totalResults, loadMore] as const;
+  return [data, totalResults] as const;
 }

@@ -28,15 +28,15 @@ export interface BookData {
     imageLinks?: { thumbnail: string };
   };
 }
-let dataSum: BookData[] = [];
+// let dataSum: BookData[] = [];
 export function SearchResults() {
   const isLoading = useSelector<RootState, boolean>((state) => state.isLoading);
   const isLoadingError = useSelector<RootState, boolean>((state) => state.isLoadingError);
   const isLoadMore = useSelector<RootState, boolean>((state) => state.isLoadMore);
-  const startIndex = useSelector<RootState, number>(
-    (state) => state.searchParams.startIndex
-  );
-  const [data, totalResults, loadMore] = useBooksData();
+  // const startIndex = useSelector<RootState, number>(
+  //   (state) => state.searchParams.startIndex
+  // );
+  const [data, totalResults] = useBooksData();
   const dispatch = useDispatch();
 
   console.log(data, totalResults, isLoadingError);
@@ -53,7 +53,7 @@ export function SearchResults() {
     <Box>
       {(data[0] || totalResults === 0) && <h2>Рузультаты поиска {totalResults}</h2>}
       <ul className={styles.booksUl}>
-        {data &&
+        {data[0] &&
           data.map(({ id, volumeInfo: { authors, categories, title, imageLinks } }) => (
             <li className={styles.bookLi} key={id}>
               {/* {title}| {categories && categories[0]}| {authors} */}
