@@ -32,48 +32,57 @@ export function SearchResults() {
   const isLoading = useSelector<RootState, boolean>((state) => state.isLoading);
   const isLoadingError = useSelector<RootState, boolean>((state) => state.isLoadingError);
   const isLoadMore = useSelector<RootState, boolean>((state) => state.isLoadMore);
-  const [data, totalResults] = useBooksData();
+  const booksData = useSelector<RootState, BookData[]>((state) => state.booksData);
+  const totalItems = useSelector<RootState, number>((state) => state.totalItems);
+  // const [data, totalResults] = useBooksData();
+  useBooksData();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  console.log(data, totalResults, isLoadingError);
+  // console.log(data, totalResults, isLoadingError);
   function handleCloseAlert() {
     dispatch(isLoadingErrorAction(false));
   }
 
   return (
     <Box>
-      {(data[0] || totalResults === 0) && <h2>Рузультаты поиска {totalResults}</h2>}
+      {(booksData[0] || totalItems === 0) && <h2>Рузультаты поиска {totalItems}</h2>}
       <ul className={styles.booksUl}>
-        {data[0] &&
-          data.map(({ id, volumeInfo: { authors, categories, title, imageLinks } }) => (
-            <li className={styles.bookLi} key={id}>
-              <Card
-                sx={{ position: 'relative', width: 245, height: '100%' }}
-                elevation={3}
-                onClick={() => navigate(`/details/${id}`)}
-              >
-                <CardMedia
-                  sx={{ height: 200, width: 150, margin: '0 auto' }}
-                  image={(imageLinks && imageLinks.thumbnail) || ''}
-                  title={title}
-                />
-                <CardContent sx={{ marginBottom: 3 }}>
-                  <Typography gutterBottom variant='h6' component='div'>
-                    {title}
-                  </Typography>
-                  <Typography variant='body2' color='text.secondary'>
-                    {authors && authors.join(', ')}
-                  </Typography>
-                </CardContent>
-                <CardActions sx={{ position: 'absolute', bottom: 0 }}>
-                  {categories && (
-                    <Chip label={categories[0]} size='small' sx={{ maxWidth: '230px' }} />
-                  )}
-                </CardActions>
-              </Card>
-            </li>
-          ))}
+        {booksData[0] &&
+          booksData.map(
+            ({ id, volumeInfo: { authors, categories, title, imageLinks } }) => (
+              <li className={styles.bookLi} key={id}>
+                <Card
+                  sx={{ position: 'relative', width: 245, height: '100%' }}
+                  elevation={3}
+                  onClick={() => navigate(`/details/${id}`)}
+                >
+                  <CardMedia
+                    sx={{ height: 200, width: 150, margin: '0 auto' }}
+                    image={(imageLinks && imageLinks.thumbnail) || ''}
+                    title={title}
+                  />
+                  <CardContent sx={{ marginBottom: 3 }}>
+                    <Typography gutterBottom variant='h6' component='div'>
+                      {title}
+                    </Typography>
+                    <Typography variant='body2' color='text.secondary'>
+                      {authors && authors.join(', ')}
+                    </Typography>
+                  </CardContent>
+                  <CardActions sx={{ position: 'absolute', bottom: 0 }}>
+                    {categories && (
+                      <Chip
+                        label={categories[0]}
+                        size='small'
+                        sx={{ maxWidth: '230px' }}
+                      />
+                    )}
+                  </CardActions>
+                </Card>
+              </li>
+            )
+          )}
       </ul>
       {isLoading && !isLoadMore && <CircularProgress id='circle-progress' />}
       {isLoadMore && <LoadMoreBtn />}

@@ -12,9 +12,15 @@ import {
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { nanoid } from 'nanoid';
-import { isLoadMoreAction, searchAction } from '../../store/rootReducer';
+import {
+  Category,
+  OrderBy,
+  isLoadMoreAction,
+  searchAction,
+} from '../../store/rootReducer';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+// import { getBooks } from '../../api/api';
 
 let categoryArr = [
   { text: 'Все категории', val: 'all', key: '' },
@@ -33,8 +39,8 @@ let sortArr = [
 
 export function SearchForm() {
   const [searchQuery, setSearchQuery] = useState('');
-  const [category, setCategory] = useState('all');
-  const [orderBy, setOrderBy] = useState('relevance');
+  const [category, setCategory] = useState<Category>('all');
+  const [orderBy, setOrderBy] = useState<OrderBy>('relevance');
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -42,6 +48,7 @@ export function SearchForm() {
     e.preventDefault();
     if (!searchQuery) return;
     dispatch(searchAction({ searchQuery, category, orderBy, startIndex: 0 }));
+    // getBooks({ searchQuery, category, orderBy, startIndex: 0 });
     navigate('/');
   }
 
@@ -91,7 +98,7 @@ export function SearchForm() {
               value={category}
               label='Категория'
               onChange={(e) => {
-                setCategory(e.target.value);
+                setCategory(e.target.value as Category);
                 dispatch(isLoadMoreAction(false));
                 dispatch(
                   searchAction({
@@ -119,7 +126,7 @@ export function SearchForm() {
               value={orderBy}
               label='Сортировка'
               onChange={(e) => {
-                setOrderBy(e.target.value);
+                setOrderBy(e.target.value as OrderBy);
                 dispatch(isLoadMoreAction(false));
                 dispatch(
                   searchAction({

@@ -29,21 +29,19 @@ export function BookDetails() {
             sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' } }}
             elevation={3}
           >
-            {/* <div className={styles.contentWrap}> */}
             <img className={styles.img} src={imageLinks?.thumbnail} alt={title} />
             <div className={styles.textWrap}>
               <h3 className={styles.h3}>{title}</h3>
               <p>
                 <span className={styles.bold}>авторы: </span>
-                {authors.join(', ')}
+                {authors && authors.join(', ')}
               </p>
               <p>{description}</p>
               <p>
                 <span className={styles.bold}>категории: </span>
-                {categories.join(', ')}
+                {categories && categories.join(', ')}
               </p>
             </div>
-            {/* </div> */}
           </Paper>
         </Box>
       </section>

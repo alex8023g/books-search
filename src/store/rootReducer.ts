@@ -25,6 +25,7 @@ export type RootState = {
   isLoadingError: boolean;
   fetchTrigger: boolean;
   booksData: BookData[];
+  totalItems: number;
 };
 
 export const SEARCH = 'SEARCH';
@@ -85,6 +86,26 @@ export const updBooksDataAction: ActionCreator<UpdBooksData> = (booksData) => ({
   booksData,
 });
 
+export const ADD_BOOKS_DATA = 'ADD_BOOKS_DATA';
+type AddBooksData = {
+  type: typeof ADD_BOOKS_DATA;
+  booksData: BookData[];
+};
+export const addBooksDataAction: ActionCreator<AddBooksData> = (booksData) => ({
+  type: ADD_BOOKS_DATA,
+  booksData,
+});
+
+export const TOTAL_ITEMS = 'TOTAL_ITEMS';
+type TotalItems = {
+  type: typeof TOTAL_ITEMS;
+  totalItems: number;
+};
+export const totalItemsAction: ActionCreator<TotalItems> = (totalItems) => ({
+  type: TOTAL_ITEMS,
+  totalItems,
+});
+
 const initialState: RootState = {
   searchParams: {
     searchQuery: '',
@@ -97,6 +118,7 @@ const initialState: RootState = {
   isLoadingError: false,
   fetchTrigger: false,
   booksData: [],
+  totalItems: -1,
 };
 
 type MyAction =
@@ -105,7 +127,9 @@ type MyAction =
   | IncStartIndex
   | IsLoadingError
   | IsLoadMore
-  | UpdBooksData;
+  | UpdBooksData
+  | TotalItems
+  | AddBooksData;
 
 export const rootReducer: Reducer<RootState, MyAction> = (
   state = initialState,
@@ -144,7 +168,17 @@ export const rootReducer: Reducer<RootState, MyAction> = (
     case UPD_BOOKS_DATA:
       return {
         ...state,
+        booksData: action.booksData || [],
+      };
+    case ADD_BOOKS_DATA:
+      return {
+        ...state,
         booksData: state.booksData.concat(action.booksData),
+      };
+    case TOTAL_ITEMS:
+      return {
+        ...state,
+        totalItems: action.totalItems,
       };
     default:
       return state;
