@@ -22,6 +22,7 @@ export type RootState = {
   isLoading: boolean;
   isLoadMore: boolean;
   isLoadingError: boolean;
+  fetchTrigger: boolean;
 };
 
 export const SEARCH = 'SEARCH';
@@ -91,6 +92,7 @@ const initialState: RootState = {
   isLoading: false,
   isLoadMore: false,
   isLoadingError: false,
+  fetchTrigger: false,
 };
 
 type MyAction = Loading | Search | IncStartIndex | IsLoadingError | IsLoadMore;
@@ -109,6 +111,7 @@ export const rootReducer: Reducer<RootState, MyAction> = (
       return {
         ...state,
         searchParams: action.searchParams,
+        fetchTrigger: !state.fetchTrigger,
       };
     case INCSTARTINDEX:
       return {

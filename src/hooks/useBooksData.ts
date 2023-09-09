@@ -15,12 +15,13 @@ export function useBooksData() {
   const [data, setData] = useState<BookData[]>([]);
   const [totalResults, setTotalResults] = useState<number>();
   const [loadMore, setLoadMore] = useState(false);
-  const dispatch = useDispatch();
   // const searchParams = useSelector<RootState, SearchParams>(
   const { searchQuery, category, orderBy, startIndex }: SearchParams = useSelector<
     RootState,
     SearchParams
   >((state) => state.searchParams);
+  const fetchTrigger = useSelector<RootState>((state) => state.fetchTrigger);
+  const dispatch = useDispatch();
 
   // const startIndex = useSelector<RootState, number>(
   //   (state) => state.searchParams.startIndex
@@ -69,6 +70,6 @@ export function useBooksData() {
         dispatch(loadingAction(false));
       }
     })();
-  }, [searchQuery, category, orderBy, startIndex]);
+  }, [searchQuery, category, orderBy, startIndex, fetchTrigger]);
   return [data, totalResults, loadMore] as const;
 }
