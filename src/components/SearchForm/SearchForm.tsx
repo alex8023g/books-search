@@ -44,8 +44,8 @@ export function SearchForm() {
   function makeRequest(e: SyntheticEvent) {
     e.preventDefault();
     if (!searchQuery) return;
-    dispatch(isLoadMoreAction(false));
-    dispatch(loadingAction(true));
+    // dispatch(isLoadMoreAction(false));
+    // dispatch(loadingAction(true));
     dispatch(searchAction({ searchQuery, category, orderBy, startIndex: 0 }));
     // dispatch(resetStartIndexAction());
   }

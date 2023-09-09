@@ -46,6 +46,8 @@ export function useBooksData() {
       try {
         // dispatch(isLoadingErrorAction(false));
         dispatch(loadingAction(true));
+        dispatch(isLoadMoreAction(false));
+
         let res = await fetch(URI);
         let { items, totalItems }: { items: BookData[]; totalItems: number } =
           await res.json();
@@ -59,6 +61,7 @@ export function useBooksData() {
           dispatch(isLoadMoreAction(false));
         }
         setData((curr) => curr.concat(items));
+        console.log('api запроса без ошибки');
       } catch {
         console.log('ошибка api запроса');
         dispatch(isLoadingErrorAction(true));

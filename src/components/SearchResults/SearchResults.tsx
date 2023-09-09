@@ -30,13 +30,13 @@ export interface BookData {
 }
 let dataSum: BookData[] = [];
 export function SearchResults() {
-  const [data, totalResults, loadMore] = useBooksData();
   const isLoading = useSelector<RootState, boolean>((state) => state.isLoading);
   const isLoadingError = useSelector<RootState, boolean>((state) => state.isLoadingError);
   const isLoadMore = useSelector<RootState, boolean>((state) => state.isLoadMore);
   const startIndex = useSelector<RootState, number>(
     (state) => state.searchParams.startIndex
   );
+  const [data, totalResults, loadMore] = useBooksData();
   const dispatch = useDispatch();
 
   console.log(data, totalResults, isLoadingError);
