@@ -18,7 +18,6 @@ function App() {
   return (
     <Provider store={store}>
       <div className='App'>
-        {/* <h1>поиск книг</h1> */}
         <SearchForm />
         <SearchResults />
       </div>

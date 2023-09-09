@@ -5,6 +5,7 @@ import {
   SearchParams,
   isLoadMoreAction,
   loadingAction,
+  loadingErrorAction,
 } from '../store/rootReducer';
 // import { getBooks } from '../api/api';
 import { BookData } from '../components/SearchResults';
@@ -34,7 +35,7 @@ export function useBooksData() {
       console.log(searchQuery, category, orderBy);
       if (!searchQuery) return;
       const subject = category === 'all' ? '' : '+subject:' + category;
-      const URI = `https://www.googleapis.com/books/v1/volumes?q=${searchQuery}${subject}&orderBy=${orderBy}&startIndex=${
+      const URI = `https://www.1googleapis.com/books/v1/volumes?q=${searchQuery}${subject}&orderBy=${orderBy}&startIndex=${
         startIndex * step
       }&maxResults=${
         step + 1
@@ -67,8 +68,10 @@ export function useBooksData() {
         setData((curr) => curr.concat(items));
       } catch {
         console.log('ошибка api запроса');
+        dispatch(loadingErrorAction(true));
+      } finally {
+        dispatch(loadingAction(false));
       }
-      dispatch(loadingAction(false));
     })();
   }, [searchQuery, category, orderBy, startIndex]);
   return [data, totalResults, loadMore] as const;

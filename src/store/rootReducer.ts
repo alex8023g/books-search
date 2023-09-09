@@ -21,7 +21,7 @@ export type RootState = {
   searchParams: SearchParams;
   isLoading: boolean;
   isLoadMore: boolean;
-  // loadingError?: LoadError;
+  isLoadingError: boolean;
 };
 
 export const SEARCH = 'SEARCH';
@@ -61,6 +61,16 @@ export const loadingAction: ActionCreator<Loading> = (isLoading) => ({
   isLoading: isLoading,
 });
 
+export const ISLOADING_ERROR = 'ISLOADING_ERROR';
+type IsLoadingError = {
+  type: typeof ISLOADING_ERROR;
+  isLoadingError: boolean;
+};
+export const loadingErrorAction: ActionCreator<IsLoadingError> = (isLoadingError) => ({
+  type: ISLOADING_ERROR,
+  isLoadingError,
+});
+
 export const ISLOADMORE = 'ISLOADMORE';
 type IsLoadMore = {
   type: typeof ISLOADMORE;
@@ -80,14 +90,10 @@ const initialState: RootState = {
   },
   isLoading: false,
   isLoadMore: false,
+  isLoadingError: false,
 };
 
-type MyAction =
-  | Loading
-  | Search
-  | IncStartIndex
-  // | ResetStartIndex
-  | IsLoadMore;
+type MyAction = Loading | Search | IncStartIndex | IsLoadingError | IsLoadMore;
 
 export const rootReducer: Reducer<RootState, MyAction> = (
   state = initialState,
@@ -122,12 +128,12 @@ export const rootReducer: Reducer<RootState, MyAction> = (
         ...state,
         isLoadMore: action.isLoadMore,
       };
-    // case LOADING_ERROR:
-    //   return {
-    //     ...state,
-    //     isLoading: false,
-    //     loadingError: action.loadingError,
-    //   };
+    case ISLOADING_ERROR:
+      return {
+        ...state,
+        isLoading: false,
+        loadingError: action.isLoadingError,
+      };
     default:
       return state;
   }
