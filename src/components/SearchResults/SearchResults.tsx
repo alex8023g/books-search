@@ -16,6 +16,7 @@ import { RootState, isLoadingErrorAction } from '../../store/rootReducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { useBooksData } from '../../hooks/useBooksData';
 import { LoadMoreBtn } from '../LoadMoreBtn';
+import { useNavigate } from 'react-router-dom';
 
 export interface BookData {
   id: string;
@@ -23,6 +24,7 @@ export interface BookData {
     authors: string[];
     categories: string[];
     title: string;
+    description: string;
     imageLinks?: { thumbnail: string };
   };
 }
@@ -32,6 +34,7 @@ export function SearchResults() {
   const isLoadMore = useSelector<RootState, boolean>((state) => state.isLoadMore);
   const [data, totalResults] = useBooksData();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   console.log(data, totalResults, isLoadingError);
   function handleCloseAlert() {
@@ -48,6 +51,7 @@ export function SearchResults() {
               <Card
                 sx={{ position: 'relative', width: 245, height: '100%' }}
                 elevation={3}
+                onClick={() => navigate(`/details/${id}`)}
               >
                 <CardMedia
                   sx={{ height: 200, width: 150, margin: '0 auto' }}
@@ -63,7 +67,9 @@ export function SearchResults() {
                   </Typography>
                 </CardContent>
                 <CardActions sx={{ position: 'absolute', bottom: 0 }}>
-                  {categories && <Chip label={categories[0]} size='small' />}
+                  {categories && (
+                    <Chip label={categories[0]} size='small' sx={{ maxWidth: '230px' }} />
+                  )}
                 </CardActions>
               </Card>
             </li>

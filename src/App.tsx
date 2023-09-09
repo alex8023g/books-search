@@ -10,15 +10,25 @@ import { Provider } from 'react-redux';
 import { rootReducer } from './store/rootReducer';
 import { createStore } from 'redux';
 import { composeWithDevTools } from '@redux-devtools/extension';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Home } from './pages/Home';
+import { BookDetails } from './pages/BookDetails';
 const store = createStore(rootReducer, composeWithDevTools());
 
 function App() {
   return (
     <Provider store={store}>
-      <div className='App'>
+      {/* <div className='App'>
         <SearchForm />
         <SearchResults />
-      </div>
+      </div> */}
+      <BrowserRouter>
+        <SearchForm />
+        <Routes>
+          <Route path='/' element={<Home />} />
+          <Route path='/details/:id' element={<BookDetails />} />
+        </Routes>
+      </BrowserRouter>
     </Provider>
   );
 }

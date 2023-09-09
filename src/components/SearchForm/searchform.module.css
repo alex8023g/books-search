@@ -1,0 +1,11 @@
+.section1 {
+  text-align: center;
+}
+.menuWrap {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  /* margin: 0 auto; */
+  max-width: 7000px;
+}

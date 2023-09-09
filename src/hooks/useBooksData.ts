@@ -6,10 +6,11 @@ import {
   isLoadMoreAction,
   loadingAction,
   isLoadingErrorAction,
+  updBooksDataAction,
 } from '../store/rootReducer';
 import { BookData } from '../components/SearchResults';
 
-export const step = 30;
+export const step = 3;
 export function useBooksData() {
   const [data, setData] = useState<BookData[]>([]);
   const [totalResults, setTotalResults] = useState<number>();
@@ -53,6 +54,7 @@ export function useBooksData() {
           dispatch(isLoadMoreAction(false));
         }
         setData((curr) => curr.concat(items));
+        dispatch(updBooksDataAction(items));
         console.log('api запроса без ошибки');
       } catch (err) {
         console.log('ошибка api запроса', err);

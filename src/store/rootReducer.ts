@@ -1,4 +1,5 @@
 import { ActionCreator, Reducer } from 'redux';
+import { BookData } from '../components/SearchResults';
 
 export type Category =
   | 'all'
@@ -23,6 +24,7 @@ export type RootState = {
   isLoadMore: boolean;
   isLoadingError: boolean;
   fetchTrigger: boolean;
+  booksData: BookData[];
 };
 
 export const SEARCH = 'SEARCH';
@@ -73,6 +75,16 @@ export const isLoadMoreAction: ActionCreator<IsLoadMore> = (isLoadMore) => ({
   isLoadMore,
 });
 
+export const UPD_BOOKS_DATA = 'UPD_BOOKS_DATA';
+type UpdBooksData = {
+  type: typeof UPD_BOOKS_DATA;
+  booksData: BookData[];
+};
+export const updBooksDataAction: ActionCreator<UpdBooksData> = (booksData) => ({
+  type: UPD_BOOKS_DATA,
+  booksData,
+});
+
 const initialState: RootState = {
   searchParams: {
     searchQuery: '',
@@ -84,9 +96,16 @@ const initialState: RootState = {
   isLoadMore: false,
   isLoadingError: false,
   fetchTrigger: false,
+  booksData: [],
 };
 
-type MyAction = Loading | Search | IncStartIndex | IsLoadingError | IsLoadMore;
+type MyAction =
+  | Loading
+  | Search
+  | IncStartIndex
+  | IsLoadingError
+  | IsLoadMore
+  | UpdBooksData;
 
 export const rootReducer: Reducer<RootState, MyAction> = (
   state = initialState,
@@ -112,7 +131,6 @@ export const rootReducer: Reducer<RootState, MyAction> = (
           startIndex: state.searchParams.startIndex + 1,
         },
       };
-
     case ISLOADMORE:
       return {
         ...state,
@@ -122,6 +140,11 @@ export const rootReducer: Reducer<RootState, MyAction> = (
       return {
         ...state,
         isLoadingError: action.isLoadingError,
+      };
+    case UPD_BOOKS_DATA:
+      return {
+        ...state,
+        booksData: state.booksData.concat(action.booksData),
       };
     default:
       return state;

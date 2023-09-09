@@ -14,6 +14,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import { nanoid } from 'nanoid';
 import { isLoadMoreAction, searchAction } from '../../store/rootReducer';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 let categoryArr = [
   { text: 'Все категории', val: 'all', key: '' },
@@ -35,15 +36,17 @@ export function SearchForm() {
   const [category, setCategory] = useState('all');
   const [orderBy, setOrderBy] = useState('relevance');
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   function makeRequest(e: SyntheticEvent) {
     e.preventDefault();
     if (!searchQuery) return;
     dispatch(searchAction({ searchQuery, category, orderBy, startIndex: 0 }));
+    navigate('/');
   }
 
   return (
-    <section>
+    <section className={styles.section1}>
       <h1>Search for books</h1>
       <Box
         component='form'
@@ -79,8 +82,8 @@ export function SearchForm() {
             label='Введите запрос'
           />
         </FormControl>
-        <div>
-          <FormControl size='small' sx={{ mr: 2, minWidth: 200 }}>
+        <div className={styles.menuWrap}>
+          <FormControl size='small' sx={{ minWidth: 200 }}>
             <InputLabel id='category-select-menu-label'>Категория</InputLabel>
             <Select
               labelId='category-select-menu-label'
