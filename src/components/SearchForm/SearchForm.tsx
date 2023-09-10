@@ -20,6 +20,7 @@ import {
 } from '../../store/rootReducer';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { useBooksData } from '../../hooks/useBooksData';
 // import { getBooks } from '../../api/api';
 
 let categoryArr = [
@@ -41,6 +42,8 @@ export function SearchForm() {
   const [searchQuery, setSearchQuery] = useState('');
   const [category, setCategory] = useState<Category>('all');
   const [orderBy, setOrderBy] = useState<OrderBy>('relevance');
+  useBooksData();
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 

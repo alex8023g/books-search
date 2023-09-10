@@ -17,6 +17,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useBooksData } from '../../hooks/useBooksData';
 import { LoadMoreBtn } from '../LoadMoreBtn';
 import { useNavigate } from 'react-router-dom';
+import { light } from '@mui/material/styles/createPalette';
 
 export interface BookData {
   id: string;
@@ -35,11 +36,11 @@ export function SearchResults() {
   const booksData = useSelector<RootState, BookData[]>((state) => state.booksData);
   const totalItems = useSelector<RootState, number>((state) => state.totalItems);
   // const [data, totalResults] = useBooksData();
-  useBooksData();
+  // useBooksData();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // console.log(data, totalResults, isLoadingError);
+  console.log(booksData);
   function handleCloseAlert() {
     dispatch(isLoadingErrorAction(false));
   }
@@ -53,7 +54,12 @@ export function SearchResults() {
             ({ id, volumeInfo: { authors, categories, title, imageLinks } }) => (
               <li className={styles.bookLi} key={id}>
                 <Card
-                  sx={{ position: 'relative', width: 245, height: '100%' }}
+                  sx={{
+                    position: 'relative',
+                    width: 245,
+                    height: '100%',
+                    cursor: 'pointer',
+                  }}
                   elevation={3}
                   onClick={() => navigate(`/details/${id}`)}
                 >
@@ -83,8 +89,14 @@ export function SearchResults() {
               </li>
             )
           )}
+        {!booksData[0] && <li></li>}
       </ul>
-      {isLoading && !isLoadMore && <CircularProgress id='circle-progress' />}
+      {isLoading && !isLoadMore && (
+        <CircularProgress
+          id='circle-progress'
+          sx={{ position: 'fixed', top: '50%', left: '50%' }}
+        />
+      )}
       {isLoadMore && <LoadMoreBtn />}
       <Snackbar
         open={isLoadingError}
