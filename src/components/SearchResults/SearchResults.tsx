@@ -35,8 +35,7 @@ export function SearchResults() {
   const isLoadMore = useSelector<RootState, boolean>((state) => state.isLoadMore);
   const booksData = useSelector<RootState, BookData[]>((state) => state.booksData);
   const totalItems = useSelector<RootState, number>((state) => state.totalItems);
-  // const [data, totalResults] = useBooksData();
-  // useBooksData();
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 

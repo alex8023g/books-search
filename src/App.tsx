@@ -18,10 +18,6 @@ const store = createStore(rootReducer, composeWithDevTools());
 function App() {
   return (
     <Provider store={store}>
-      {/* <div className='App'>
-        <SearchForm />
-        <SearchResults />
-      </div> */}
       <BrowserRouter>
         <SearchForm />
         <Routes>

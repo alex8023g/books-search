@@ -6,7 +6,6 @@ import { SearchResults } from '../../components/SearchResults';
 export function Home() {
   return (
     <div className='App'>
-      {/* <SearchForm /> */}
       <SearchResults />
     </div>
   );

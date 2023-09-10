@@ -14,13 +14,10 @@ import { BookData } from '../components/SearchResults';
 
 export const step = 30;
 export function useBooksData() {
-  // const [data, setData] = useState<BookData[]>([]);
-  // const [totalResults, setTotalResults] = useState<number>();
   const { searchQuery, category, orderBy, startIndex }: SearchParams = useSelector<
     RootState,
     SearchParams
   >((state) => state.searchParams);
-  // const booksData = useSelector<RootState, BookData[]>((state) => state.booksData);
   const fetchTrigger = useSelector<RootState>((state) => state.fetchTrigger);
   const dispatch = useDispatch();
   const isMounted = useRef(false);
@@ -28,9 +25,6 @@ export function useBooksData() {
   useEffect(() => {
     (async () => {
       if (isMounted.current) {
-        // if (startIndex === 0) {
-        //   setData([]);
-        // }
         console.log(searchQuery, category, orderBy);
         if (!searchQuery) return;
         const subject = category === 'all' ? '' : '+subject:' + category;
@@ -50,7 +44,6 @@ export function useBooksData() {
           let { items, totalItems }: { items: BookData[]; totalItems: number } =
             await res.json();
           console.log('useBooksData', items, totalItems);
-          // setTotalResults(totalItems);
           dispatch(totalItemsAction(totalItems));
           if (items && items.length > step) {
             items.pop();
@@ -58,7 +51,6 @@ export function useBooksData() {
           } else {
             dispatch(isLoadMoreAction(false));
           }
-          // setData((curr) => curr.concat(items));
           if (startIndex === 0) {
             dispatch(updBooksDataAction(items));
           } else {
@@ -76,5 +68,4 @@ export function useBooksData() {
       }
     })();
   }, [searchQuery, category, orderBy, startIndex, fetchTrigger]);
-  // return [data, totalResults] as const;
 }

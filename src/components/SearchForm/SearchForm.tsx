@@ -21,7 +21,6 @@ import {
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useBooksData } from '../../hooks/useBooksData';
-// import { getBooks } from '../../api/api';
 
 let categoryArr = [
   { text: 'Все категории', val: 'all', key: '' },
@@ -51,7 +50,6 @@ export function SearchForm() {
     e.preventDefault();
     if (!searchQuery) return;
     dispatch(searchAction({ searchQuery, category, orderBy, startIndex: 0 }));
-    // getBooks({ searchQuery, category, orderBy, startIndex: 0 });
     navigate('/');
   }
 

@@ -17,7 +17,6 @@ export function BookDetails() {
     window.location.replace('/');
   }
   const {
-    // id,
     volumeInfo: { authors, categories, title, imageLinks, description },
   } = bookData;
   return (
